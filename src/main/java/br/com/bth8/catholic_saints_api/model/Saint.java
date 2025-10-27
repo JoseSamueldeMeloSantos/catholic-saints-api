@@ -23,7 +23,7 @@ public abstract class Saint {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    private UUID saintId;
 
     @NotBlank
     @Column(nullable = false, length = 30)
@@ -45,7 +45,6 @@ public abstract class Saint {
     @Temporal(TemporalType.DATE)
     private Date canonizationDate;
 
-    @Column(nullable = false)
     @OneToMany(mappedBy = "saint")
     private List<Miracle> miracles;
 

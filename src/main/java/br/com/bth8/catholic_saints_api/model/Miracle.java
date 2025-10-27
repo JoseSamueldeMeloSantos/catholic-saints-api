@@ -17,7 +17,7 @@ public class Miracle {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    private UUID miracleId;
 
     @NotBlank
     @Column(nullable = false, length = 70)
