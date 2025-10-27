@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: chatolic-saints-api
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/catholic_saints?useTimezone=tru&serverTimezone=UTC
+    username: root
+    password: 15032002
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+    show-sql: false
+
+  flyway:
+    enabled: false
