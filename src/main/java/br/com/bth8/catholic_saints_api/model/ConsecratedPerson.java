@@ -5,12 +5,14 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
 @Data
 @EqualsAndHashCode
 @AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @DiscriminatorValue(value = "consecrated_person")
 public class ConsecratedPerson extends Saint {
