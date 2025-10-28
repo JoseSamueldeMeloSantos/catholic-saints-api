@@ -2,6 +2,7 @@ package br.com.bth8.catholic_saints_api.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -45,7 +46,13 @@ public abstract class Saint {
     @Temporal(TemporalType.DATE)
     private Date canonizationDate;
 
-    @OneToMany(mappedBy = "saint")
+    /**(o all e para definir que para todas as operações CRUD)
+     *  cascade = CascadeType.ALL ->
+     *  O JPA vai salvar o santo e automaticamente salvar o milagre junto,
+     * sem você precisar chamar miracleRepository.save(m1).
+     */
+    @NotNull
+    @OneToMany(mappedBy = "saint", cascade = CascadeType.ALL)
     private List<Miracle> miracles;
 
 }
