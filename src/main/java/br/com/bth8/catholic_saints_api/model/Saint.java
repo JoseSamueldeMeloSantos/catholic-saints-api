@@ -52,7 +52,7 @@ public abstract class Saint {
      * sem você precisar chamar miracleRepository.save(m1).
      */
     @NotNull
-    @OneToMany(mappedBy = "saint", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
     private List<Miracle> miracles;
 
 }

@@ -26,7 +26,7 @@ public class Miracle {
     private String title;
 
     @ManyToOne
-    @JoinColumn(name = "author_id")
+    @JoinColumn(name = "author")
     private Saint author;
 
     @NotBlank

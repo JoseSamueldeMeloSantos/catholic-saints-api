@@ -18,3 +18,8 @@ spring:
 
   flyway:
     enabled: false
+
+  logging:
+    level:
+      root: WARN
+      br.com.bth8: DEBUG
