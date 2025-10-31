@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.UUID;
 
 @Repository
-public interface ReligousOrderRepository extends JpaRepository<ReligiousOrder, UUID> {
+public interface ReligiousOrderRepository extends JpaRepository<ReligiousOrder, UUID> {
 
 }

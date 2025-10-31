@@ -47,7 +47,7 @@ public class SaintController {
                 MediaType.APPLICATION_YAML_VALUE
             }
     )
-    public SaintDTO findById(@RequestParam("id")UUID id) {
+    public SaintDTO findById(@PathVariable("id")UUID id) {
         return service.findById(id);
     }
 

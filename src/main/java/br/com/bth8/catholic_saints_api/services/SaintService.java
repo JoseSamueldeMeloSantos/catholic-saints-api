@@ -30,6 +30,8 @@ public class SaintService {
     }
 
     public SaintDTO findById(UUID id) {
+        logger.info("finding a saint by his ID");
+
         Saint entity = repository.findById(id)
                 .orElseThrow(() -> new EntityNotFound("Entity not found"));
 
@@ -37,6 +39,7 @@ public class SaintService {
     }
 
     public void delete(UUID id) {
+        logger.info("Deleting a saint by his ID");
 
         Saint entity = repository.findById(id)
                 .orElseThrow(() -> new EntityNotFound("Entity Not Found"));
