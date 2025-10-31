@@ -1,5 +1,6 @@
 package br.com.bth8.catholic_saints_api.services;
 
+import br.com.bth8.catholic_saints_api.dto.LayPersonDTO;
 import br.com.bth8.catholic_saints_api.dto.SaintDTO;
 import br.com.bth8.catholic_saints_api.exception.EntityNotFound;
 import br.com.bth8.catholic_saints_api.mapper.ObjectMapper;
@@ -28,15 +29,6 @@ public class SaintService {
         return ObjectMapper.parseListObjects(repository.findAll(), SaintDTO.class);
     }
 
-
-    public SaintDTO create(SaintDTO saint) {
-        logger.info("creating a saint");
-
-        Saint entity = ObjectMapper.parseObject(saint, Saint.class);
-
-        return ObjectMapper.parseObject(repository.save(entity),SaintDTO.class);
-    }
-
     public SaintDTO findById(UUID id) {
         Saint entity = repository.findById(id)
                 .orElseThrow(() -> new EntityNotFound("Entity not found"));
@@ -50,20 +42,5 @@ public class SaintService {
                 .orElseThrow(() -> new EntityNotFound("Entity Not Found"));
 
         repository.delete(entity);
-    }
-
-    public SaintDTO update(SaintDTO saint) {
-
-        Saint entity = repository.findById(saint.getSaintId())
-                .orElseThrow(() -> new EntityNotFound("Entity Not Found"));
-
-        entity.setName(saint.getName());
-        entity.setDescription(saint.getDescription());
-        entity.setBaptismDate(saint.getBaptismDate());
-        entity.setDeathDate(saint.getDeathDate());
-        entity.setCanonizationDate(saint.getCanonizationDate());
-        entity.setMiracles(saint.getMiracles());
-
-        return ObjectMapper.parseObject(entity,SaintDTO.class);
     }
 }
