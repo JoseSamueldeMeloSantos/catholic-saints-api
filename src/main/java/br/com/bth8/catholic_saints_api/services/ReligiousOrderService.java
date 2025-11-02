@@ -17,6 +17,8 @@ public class ReligiousOrderService {
 
     @Autowired
     private ReligiousOrderRepository repository;
+    @Autowired
+    private ObjectMapper mapper;
 
     private Logger logger = Logger.getLogger(ReligiousOrderService.class.getName());
 
@@ -24,9 +26,9 @@ public class ReligiousOrderService {
     public ReligiousOrderDTO create(ReligiousOrderDTO religiousOrder) {
         logger.info("creating ReligiousOrder");
 
-        ReligiousOrder entity = ObjectMapper.parseObject(religiousOrder, ReligiousOrder.class);
+        ReligiousOrder entity = mapper.parseObject(religiousOrder, ReligiousOrder.class);
 
-        return ObjectMapper.parseObject(repository.save(entity),ReligiousOrderDTO.class);
+        return mapper.parseObject(repository.save(entity),ReligiousOrderDTO.class);
     }
 
     public ReligiousOrderDTO findById(UUID id) {
@@ -35,7 +37,7 @@ public class ReligiousOrderService {
         ReligiousOrder entity = repository.findById(id)
                 .orElseThrow(() -> new EntityNotFound("Entity Not Found"));
 
-        return ObjectMapper.parseObject(entity, ReligiousOrderDTO.class);
+        return mapper.parseObject(entity, ReligiousOrderDTO.class);
     }
 
     public List<ReligiousOrderDTO> findAll() {
@@ -43,7 +45,7 @@ public class ReligiousOrderService {
 
         List<ReligiousOrder> entities = repository.findAll();
 
-        return ObjectMapper.parseListObjects(entities,ReligiousOrderDTO.class);
+        return mapper.parseListObjects(entities,ReligiousOrderDTO.class);
     }
 
 
@@ -67,6 +69,6 @@ public class ReligiousOrderService {
         entity.setFoundationDate(religiousOrder.getFoundationDate());
         entity.setVows(religiousOrder.getVows());
 
-        return ObjectMapper.parseObject(repository.save(entity), ReligiousOrderDTO.class);
+        return mapper.parseObject(repository.save(entity), ReligiousOrderDTO.class);
     }
 }

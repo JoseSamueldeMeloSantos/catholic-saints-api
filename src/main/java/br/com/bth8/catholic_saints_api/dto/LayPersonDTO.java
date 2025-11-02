@@ -23,6 +23,9 @@ public class LayPersonDTO extends SaintDTO{
         this.associatedMovement = associatedMovement;
     }
 
+    public LayPersonDTO() {
+        super();
+    }
 
     public String getOcupation() {
         return ocupation;

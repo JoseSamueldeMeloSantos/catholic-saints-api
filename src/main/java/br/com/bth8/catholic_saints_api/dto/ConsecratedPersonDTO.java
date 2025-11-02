@@ -29,7 +29,9 @@ public class ConsecratedPersonDTO extends SaintDTO{
         this.religiousOrder = religiousOrder;
     }
 
-
+    public ConsecratedPersonDTO() {
+        super();
+    }
 
     public String getPosition() {
         return position;

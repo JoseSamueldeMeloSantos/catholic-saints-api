@@ -20,14 +20,16 @@ public class LayPersonService {
 
     @Autowired
     private SaintRepository repository;
+    @Autowired
+    private ObjectMapper mapper;
 
 
     public LayPersonDTO create(LayPersonDTO saint) {
         logger.info("creating a LayPerson");
 
-        LayPerson entity = ObjectMapper.parseObject(saint, LayPerson.class);
+        LayPerson entity = mapper.parseObject(saint, LayPerson.class);
 
-        return ObjectMapper.parseObject( repository.save(entity),LayPersonDTO.class);
+        return mapper.parseObject( repository.save(entity),LayPersonDTO.class);
     }
 
 
@@ -47,6 +49,6 @@ public class LayPersonService {
         entity.setMaried(saint.getMaried());
         entity.setAssociatedMovement(saint.getAssociatedMovement());
 
-        return ObjectMapper.parseObject(repository.save(entity),LayPersonDTO.class);
+        return mapper.parseObject(repository.save(entity),LayPersonDTO.class);
     }
 }

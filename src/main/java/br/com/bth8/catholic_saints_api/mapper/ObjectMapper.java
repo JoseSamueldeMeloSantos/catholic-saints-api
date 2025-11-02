@@ -1,24 +1,31 @@
 package br.com.bth8.catholic_saints_api.mapper;
 
-import com.github.dozermapper.core.DozerBeanMapperBuilder;
-import com.github.dozermapper.core.Mapper;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class ObjectMapper {
 
-    private static Mapper mapper = DozerBeanMapperBuilder.buildDefault();
+    private final ModelMapper modelMapper;
 
-    public static <O,D> D parseObject(O origin, Class<D> destination) {
-        return mapper.map(origin, destination);
+    public ObjectMapper() {
+        this.modelMapper = new ModelMapper();
     }
 
-    public static <O,D> List<D> parseListObjects(List<O> origin, Class<D> destination) {
+    public <O,D> D parseObject(O origin, Class<D> destination) {
+        return this.modelMapper.map(origin, destination);
+    }
+
+    public <O,D> List<D> parseListObjects(List<O> origin, Class<D> destination) {
         List<D> destinationList = new ArrayList<>();
 
         for (Object o: origin) {
-            destinationList.add(mapper.map(o,destination));
+            destinationList.add(this.modelMapper.map(o,destination));
         }
 
         return destinationList;

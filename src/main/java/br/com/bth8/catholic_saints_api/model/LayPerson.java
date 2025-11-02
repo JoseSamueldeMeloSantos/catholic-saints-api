@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @EqualsAndHashCode
 @Entity
+@Table(name = "lay_persons")
 @DiscriminatorValue("lay_person")
 public class LayPerson extends Saint {
 

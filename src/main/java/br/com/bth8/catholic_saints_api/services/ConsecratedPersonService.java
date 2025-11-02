@@ -5,7 +5,7 @@ import br.com.bth8.catholic_saints_api.exception.EntityNotFound;
 import br.com.bth8.catholic_saints_api.mapper.ObjectMapper;
 import br.com.bth8.catholic_saints_api.model.ConsecratedPerson;
 import br.com.bth8.catholic_saints_api.repository.SaintRepository;
-import com.github.dozermapper.core.Mapper;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,14 +18,15 @@ public class ConsecratedPersonService {
 
     @Autowired
     private SaintRepository repository;
+    @Autowired ObjectMapper mapper;
 
 
     public ConsecratedPersonDTO create(ConsecratedPersonDTO saint) {
         logger.info("creating a ConsecratedPerson");
 
-        ConsecratedPerson entity = ObjectMapper.parseObject(saint, ConsecratedPerson.class);
+        ConsecratedPerson entity = mapper.parseObject(saint, ConsecratedPerson.class);
 
-        return ObjectMapper.parseObject(repository.save(entity), ConsecratedPersonDTO.class);
+        return mapper.parseObject(repository.save(entity), ConsecratedPersonDTO.class);
     }
 
     public ConsecratedPersonDTO update(ConsecratedPersonDTO saint) {
@@ -45,6 +46,6 @@ public class ConsecratedPersonService {
         entity.setOrdinationDate(saint.getOrdinationDate());
         entity.setReligiousOrder(saint.getReligiousOrder());
 
-        return ObjectMapper.parseObject(repository.save(entity),ConsecratedPersonDTO.class);
+        return mapper.parseObject(repository.save(entity),ConsecratedPersonDTO.class);
     }
 }

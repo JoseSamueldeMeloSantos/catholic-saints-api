@@ -3,6 +3,7 @@ package br.com.bth8.catholic_saints_api.controllers;
 import br.com.bth8.catholic_saints_api.dto.LayPersonDTO;
 import br.com.bth8.catholic_saints_api.dto.SaintDTO;
 import br.com.bth8.catholic_saints_api.services.LayPersonService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/saint/layperson/v1")
 public class LayPersonController {
 
+    @Autowired
     private LayPersonService service;
 
     @PostMapping(

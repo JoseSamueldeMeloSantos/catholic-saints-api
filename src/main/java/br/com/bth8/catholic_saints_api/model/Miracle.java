@@ -25,10 +25,6 @@ public class Miracle {
     @Column(nullable = false, length = 70)
     private String title;
 
-    @ManyToOne
-    @JoinColumn(name = "author")
-    private Saint author;
-
     @NotBlank
     @Column(nullable = false, length = 500)
     private String description;

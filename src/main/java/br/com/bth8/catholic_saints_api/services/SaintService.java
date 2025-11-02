@@ -23,10 +23,12 @@ public class SaintService {
 
     @Autowired
     private SaintRepository repository;
+    @Autowired
+    private ObjectMapper mapper;
 
     public List<SaintDTO> findAll() {
         logger.info("finding all saint");
-        return ObjectMapper.parseListObjects(repository.findAll(), SaintDTO.class);
+        return mapper.parseListObjects(repository.findAll(), SaintDTO.class);
     }
 
     public SaintDTO findById(UUID id) {
@@ -35,7 +37,8 @@ public class SaintService {
         Saint entity = repository.findById(id)
                 .orElseThrow(() -> new EntityNotFound("Entity not found"));
 
-        return ObjectMapper.parseObject(entity, SaintDTO.class);
+        logger.info("retornando dto");
+        return mapper.parseObject(entity, SaintDTO.class);
     }
 
     public void delete(UUID id) {

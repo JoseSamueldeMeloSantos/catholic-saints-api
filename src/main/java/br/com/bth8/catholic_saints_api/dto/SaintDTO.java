@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-public abstract class SaintDTO {
+public  class SaintDTO {
 
     private UUID saintId;
     private String name;

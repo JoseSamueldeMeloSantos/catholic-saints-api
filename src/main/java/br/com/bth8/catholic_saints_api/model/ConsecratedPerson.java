@@ -14,11 +14,12 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Table(name = "consecrated_person")
 @DiscriminatorValue(value = "consecrated_person")
 public class ConsecratedPerson extends Saint {
 
     @NotBlank
-    @Column(nullable = false, length = 20)
+    @Column(length = 20)
     private String position;
 
     @NotBlank

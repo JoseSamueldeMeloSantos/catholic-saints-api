@@ -14,7 +14,7 @@ import java.util.UUID;
 @EqualsAndHashCode
 @Entity
 @Table(name = "saints")
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)//Define que todos os dados das subclasses serão armazenados na tabela desta classe.
+@Inheritance(strategy = InheritanceType.JOINED)//Define que todos os dados das subclasses serão armazenados na tabela desta classe.
 @DiscriminatorColumn(//usada para definir uma coluna na tabela do banco de dados que será usada para distinguir
         name = "SaintType",
         discriminatorType = DiscriminatorType.STRING
@@ -41,7 +41,7 @@ public abstract class Saint {
     @Temporal(TemporalType.DATE)
     private Date deathDate;
 
-    @NotBlank
+    @NotNull
     @Column(name = "canocization_date", nullable = false)
     @Temporal(TemporalType.DATE)
     private Date canonizationDate;
@@ -49,10 +49,10 @@ public abstract class Saint {
     /**(o all e para definir que para todas as operações CRUD)
      *  cascade = CascadeType.ALL ->
      *  O JPA vai salvar o santo e automaticamente salvar o milagre junto,
-     * sem você precisar chamar miracleRepository.save(m1).
+     *  sem você precisar chamar miracleRepository.save(m1).
      */
-    @NotNull
-    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "saint_id_fk")
     private List<Miracle> miracles;
 
 }
