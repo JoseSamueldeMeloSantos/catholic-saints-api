@@ -1,16 +1,19 @@
 package br.com.bth8.catholic_saints_api.services;
 
 import br.com.bth8.catholic_saints_api.controllers.LayPersonController;
+import br.com.bth8.catholic_saints_api.dto.ConsecratedPersonDTO;
 import br.com.bth8.catholic_saints_api.dto.LayPersonDTO;
 import br.com.bth8.catholic_saints_api.dto.SaintDTO;
 import br.com.bth8.catholic_saints_api.exception.EntityNotFound;
 import br.com.bth8.catholic_saints_api.mapper.ObjectMapper;
+import br.com.bth8.catholic_saints_api.model.ConsecratedPerson;
 import br.com.bth8.catholic_saints_api.model.LayPerson;
 import br.com.bth8.catholic_saints_api.repository.SaintRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
 import java.util.logging.Logger;
 
 @Service
@@ -23,6 +26,15 @@ public class LayPersonService {
     @Autowired
     private ObjectMapper mapper;
 
+
+    public LayPersonDTO findByID(UUID id) {
+        logger.info("finding a LayPerson by his ID");
+
+        LayPerson enity = (LayPerson) repository.findById(id)
+                .orElseThrow(() -> new EntityNotFound("Entity Not Found"));
+
+        return mapper.parseObject(enity, LayPersonDTO.class);
+    }
 
     public LayPersonDTO create(LayPersonDTO saint) {
         logger.info("creating a LayPerson");

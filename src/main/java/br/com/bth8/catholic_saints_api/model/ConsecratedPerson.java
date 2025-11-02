@@ -14,23 +14,24 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "consecrated_person")
 @DiscriminatorValue(value = "consecrated_person")
 public class ConsecratedPerson extends Saint {
 
-    @NotBlank
-    @Column(length = 20)
-    private String position;
+    //religiosos consagrados não podem ter position,diocese e ordinationDate
 
     @NotBlank
     @Column(length = 20)
-    private String diocese;
+    private String position = "N/A";
+
+    @NotBlank
+    @Column(length = 20)
+    private String diocese = "N/A";
 
     @Column(name = "ordination_date")
     @Temporal(TemporalType.DATE)
     private Date ordinationDate;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "religious_order_id")
     private ReligiousOrder religiousOrder;
 }

@@ -13,12 +13,10 @@ import java.util.UUID;
 @Data
 @EqualsAndHashCode
 @Entity
-@Table(name = "saints")
-@Inheritance(strategy = InheritanceType.JOINED)//Define que todos os dados das subclasses serão armazenados na tabela desta classe.
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)//Define que todos os dados das subclasses serão armazenados na tabela desta classe.
 @DiscriminatorColumn(//usada para definir uma coluna na tabela do banco de dados que será usada para distinguir
         name = "SaintType",
         discriminatorType = DiscriminatorType.STRING
-
 )
 public abstract class Saint {
 

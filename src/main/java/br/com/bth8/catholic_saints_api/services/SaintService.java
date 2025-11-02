@@ -47,6 +47,7 @@ public class SaintService {
         Saint entity = repository.findById(id)
                 .orElseThrow(() -> new EntityNotFound("Entity Not Found"));
 
+
         repository.delete(entity);
     }
 }

@@ -6,15 +6,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
 import java.util.logging.Logger;
 
 @RestController
-@RequestMapping("/api/saint/ConsecratedPerson")
+@RequestMapping("/api/saint/consecratedPerson/v1")
 public class ConsecratedPersonController {
 
     @Autowired
     private ConsecratedPersonService service;
 
+    @GetMapping(
+            value = "/{id}",
+            produces = {
+                    MediaType.APPLICATION_JSON_VALUE,
+                    MediaType.APPLICATION_XML_VALUE,
+                    MediaType.APPLICATION_YAML_VALUE
+            }
+    )
+    public ConsecratedPersonDTO findById(@PathVariable("id") UUID id) {
+        return service.findByID(id);
+    }
 
     @PostMapping (
             consumes = {

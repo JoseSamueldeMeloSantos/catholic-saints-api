@@ -12,18 +12,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @EqualsAndHashCode
 @Entity
-@Table(name = "lay_persons")
 @DiscriminatorValue("lay_person")
 public class LayPerson extends Saint {
 
     @NotBlank
     @Column(length = 30)
-    private String ocupation;
+    private String ocupation = "N/A";
 
     private Boolean maried;
 
     @NotBlank
     @Column(name = "associated_movement", length = 50)
-    private String associatedMovement;
+    private String associatedMovement = "N/A";
 
 }

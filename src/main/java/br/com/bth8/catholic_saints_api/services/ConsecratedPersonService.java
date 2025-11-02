@@ -9,6 +9,7 @@ import br.com.bth8.catholic_saints_api.repository.SaintRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
 import java.util.logging.Logger;
 
 @Service
@@ -18,7 +19,8 @@ public class ConsecratedPersonService {
 
     @Autowired
     private SaintRepository repository;
-    @Autowired ObjectMapper mapper;
+    @Autowired
+    private ObjectMapper mapper;
 
 
     public ConsecratedPersonDTO create(ConsecratedPersonDTO saint) {
@@ -47,5 +49,14 @@ public class ConsecratedPersonService {
         entity.setReligiousOrder(saint.getReligiousOrder());
 
         return mapper.parseObject(repository.save(entity),ConsecratedPersonDTO.class);
+    }
+
+    public ConsecratedPersonDTO findByID(UUID id) {
+        logger.info("finding a consecratedPerson by his ID");
+
+        ConsecratedPerson enity = (ConsecratedPerson) repository.findById(id)
+                .orElseThrow(() -> new EntityNotFound("Entity Not Found"));
+
+        return mapper.parseObject(enity, ConsecratedPersonDTO.class);
     }
 }
