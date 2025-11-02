@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -33,9 +34,8 @@ public class ReligiousOrder {
     @Column(nullable = false, length = 30)
     private String name;
 
-    @Temporal(TemporalType.DATE)
     @Column(name = "foundation_date")
-    private Date foundationDate;
+    private LocalDate foundationDate;
 
     @ElementCollection
     @Column(name = "vow")

@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -32,17 +33,14 @@ public abstract class Saint {
     private String description;
 
     @Column(name = "baptism_date")
-    @Temporal(TemporalType.DATE)
-    private Date baptismDate;
+    private LocalDate baptismDate;
 
     @Column(name = "death_date")
-    @Temporal(TemporalType.DATE)
-    private Date deathDate;
+    private LocalDate deathDate;
 
     @NotNull
     @Column(name = "canocization_date", nullable = false)
-    @Temporal(TemporalType.DATE)
-    private Date canonizationDate;
+    private LocalDate canonizationDate;
 
     /**(o all e para definir que para todas as operações CRUD)
      *  cascade = CascadeType.ALL ->

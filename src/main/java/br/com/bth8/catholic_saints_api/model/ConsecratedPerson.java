@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
@@ -28,8 +29,7 @@ public class ConsecratedPerson extends Saint {
     private String diocese = "N/A";
 
     @Column(name = "ordination_date")
-    @Temporal(TemporalType.DATE)
-    private Date ordinationDate;
+    private LocalDate ordinationDate;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "religious_order_id")

@@ -40,7 +40,7 @@ public class ConsecratedPersonController {
                     MediaType.APPLICATION_YAML_VALUE
             }
     )
-    private ConsecratedPersonDTO create(@RequestBody ConsecratedPersonDTO saint) {
+    public ConsecratedPersonDTO create(@RequestBody ConsecratedPersonDTO saint) {
         return service.create(saint);
     }
 
@@ -56,7 +56,7 @@ public class ConsecratedPersonController {
                     MediaType.APPLICATION_YAML_VALUE
             }
     )
-    private ConsecratedPersonDTO update(ConsecratedPersonDTO saint) {
+    public ConsecratedPersonDTO update(ConsecratedPersonDTO saint) {
         return service.update(saint);
     }
 }

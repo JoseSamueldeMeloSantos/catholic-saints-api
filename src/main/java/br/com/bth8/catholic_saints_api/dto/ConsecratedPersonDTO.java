@@ -4,24 +4,27 @@ import br.com.bth8.catholic_saints_api.model.Miracle;
 import br.com.bth8.catholic_saints_api.model.ReligiousOrder;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import org.springframework.hateoas.server.core.Relation;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
+@Relation(collectionRelation = "consecrated_persons")
 public class ConsecratedPersonDTO extends SaintDTO{
 
     private String position;
     private String diocese;
-    private Date ordinationDate;
+    private LocalDate ordinationDate;
     private ReligiousOrder religiousOrder;
 
     public ConsecratedPersonDTO(
             UUID saintId, String name, String description,
-            Date baptismDate, Date deathDate, Date canonizationDate,
+            LocalDate baptismDate, LocalDate deathDate, LocalDate canonizationDate,
             List<Miracle> miracles, String position, String diocese,
-            Date ordinationDate, ReligiousOrder religiousOrder) {
+            LocalDate ordinationDate, ReligiousOrder religiousOrder) {
         super(saintId, name, description, baptismDate, deathDate, canonizationDate, miracles);
         this.position = position;
         this.diocese = diocese;
@@ -49,11 +52,11 @@ public class ConsecratedPersonDTO extends SaintDTO{
         this.diocese = diocese;
     }
 
-    public Date getOrdinationDate() {
+    public LocalDate getOrdinationDate() {
         return ordinationDate;
     }
 
-    public void setOrdinationDate(Date ordinationDate) {
+    public void setOrdinationDate(LocalDate ordinationDate) {
         this.ordinationDate = ordinationDate;
     }
 

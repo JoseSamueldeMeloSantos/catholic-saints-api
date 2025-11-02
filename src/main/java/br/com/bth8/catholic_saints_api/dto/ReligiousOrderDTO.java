@@ -3,6 +3,7 @@ package br.com.bth8.catholic_saints_api.dto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -13,10 +14,10 @@ public class ReligiousOrderDTO {
     private UUID religiousOrderId;
     private String founder;
     private String name;
-    private Date foundationDate;
+    private LocalDate foundationDate;
     private List<String> vows;
 
-    public ReligiousOrderDTO(UUID religiousOrderId, String founder, String name, Date foundationDate, List<String> vows) {
+    public ReligiousOrderDTO(UUID religiousOrderId, String founder, String name, LocalDate foundationDate, List<String> vows) {
         this.religiousOrderId = religiousOrderId;
         this.founder = founder;
         this.name = name;
@@ -48,11 +49,11 @@ public class ReligiousOrderDTO {
         this.name = name;
     }
 
-    public Date getFoundationDate() {
+    public LocalDate getFoundationDate() {
         return foundationDate;
     }
 
-    public void setFoundationDate(Date foundationDate) {
+    public void setFoundationDate(LocalDate foundationDate) {
         this.foundationDate = foundationDate;
     }
 

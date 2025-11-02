@@ -1,12 +1,15 @@
 package br.com.bth8.catholic_saints_api.dto;
 
 import br.com.bth8.catholic_saints_api.model.Miracle;
+import org.springframework.hateoas.server.core.Relation;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
+@Relation(collectionRelation = "lay_persons")
 public class LayPersonDTO extends SaintDTO{
 
     private String ocupation;
@@ -15,7 +18,7 @@ public class LayPersonDTO extends SaintDTO{
 
     public LayPersonDTO(
             UUID saintId, String name, String description,
-            Date baptismDate, Date deathDate, Date canonizationDate,
+            LocalDate baptismDate, LocalDate deathDate, LocalDate canonizationDate,
             List<Miracle> miracles, String ocupation, Boolean maried, String associatedMovement) {
         super(saintId, name, description, baptismDate, deathDate, canonizationDate, miracles);
         this.ocupation = ocupation;

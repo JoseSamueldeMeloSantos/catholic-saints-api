@@ -16,6 +16,9 @@ import org.springframework.stereotype.Service;
 import java.util.UUID;
 import java.util.logging.Logger;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 @Service
 public class LayPersonService {
 
@@ -33,7 +36,10 @@ public class LayPersonService {
         LayPerson enity = (LayPerson) repository.findById(id)
                 .orElseThrow(() -> new EntityNotFound("Entity Not Found"));
 
-        return mapper.parseObject(enity, LayPersonDTO.class);
+        LayPersonDTO dto = mapper.parseObject(enity, LayPersonDTO.class);
+        addHateoas(dto);
+
+        return dto;
     }
 
     public LayPersonDTO create(LayPersonDTO saint) {
@@ -41,7 +47,10 @@ public class LayPersonService {
 
         LayPerson entity = mapper.parseObject(saint, LayPerson.class);
 
-        return mapper.parseObject( repository.save(entity),LayPersonDTO.class);
+        LayPersonDTO dto = mapper.parseObject( repository.save(entity),LayPersonDTO.class);
+        addHateoas(dto);
+
+        return dto;
     }
 
 
@@ -61,6 +70,19 @@ public class LayPersonService {
         entity.setMaried(saint.getMaried());
         entity.setAssociatedMovement(saint.getAssociatedMovement());
 
-        return mapper.parseObject(repository.save(entity),LayPersonDTO.class);
+        LayPersonDTO dto = mapper.parseObject(repository.save(entity),LayPersonDTO.class);
+        addHateoas(dto);
+
+        return dto;
+    }
+
+    private void addHateoas(LayPersonDTO dto) {
+        logger.info("adding hateoas");
+
+        dto.add(linkTo(methodOn(LayPersonController.class).findById(dto.getSaintId())).withSelfRel().withType("GET"));
+
+        dto.add(linkTo(methodOn(LayPersonController.class).create(dto)).withRel("create").withType("POST"));
+
+        dto.add(linkTo(methodOn(LayPersonController.class).update(dto)).withRel("update").withType("PUT"));
     }
 }

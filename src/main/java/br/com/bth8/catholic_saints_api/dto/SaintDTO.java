@@ -1,26 +1,30 @@
 package br.com.bth8.catholic_saints_api.dto;
 
 import br.com.bth8.catholic_saints_api.model.Miracle;
+import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.server.core.Relation;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-public  class SaintDTO {
+@Relation(collectionRelation = "saints")
+public  class SaintDTO extends RepresentationModel<SaintDTO> {
 
     private UUID saintId;
     private String name;
     private String description;
-    private Date baptismDate;
-    private Date deathDate;
-    private Date canonizationDate;
+    private LocalDate baptismDate;
+    private LocalDate deathDate;
+    private LocalDate canonizationDate;
     private List<Miracle> miracles;
 
     public SaintDTO(
             UUID saintId, String name,
-            String description, Date baptismDate,
-            Date deathDate, Date canonizationDate,
+            String description, LocalDate baptismDate,
+            LocalDate deathDate, LocalDate canonizationDate,
             List<Miracle> miracles) {
 
         this.saintId = saintId;
@@ -59,27 +63,27 @@ public  class SaintDTO {
         this.description = description;
     }
 
-    public Date getBaptismDate() {
+    public LocalDate getBaptismDate() {
         return baptismDate;
     }
 
-    public void setBaptismDate(Date baptismDate) {
+    public void setBaptismDate(LocalDate baptismDate) {
         this.baptismDate = baptismDate;
     }
 
-    public Date getDeathDate() {
+    public LocalDate getDeathDate() {
         return deathDate;
     }
 
-    public void setDeathDate(Date deathDate) {
+    public void setDeathDate(LocalDate deathDate) {
         this.deathDate = deathDate;
     }
 
-    public Date getCanonizationDate() {
+    public LocalDate getCanonizationDate() {
         return canonizationDate;
     }
 
-    public void setCanonizationDate(Date canonizationDate) {
+    public void setCanonizationDate(LocalDate canonizationDate) {
         this.canonizationDate = canonizationDate;
     }
 
