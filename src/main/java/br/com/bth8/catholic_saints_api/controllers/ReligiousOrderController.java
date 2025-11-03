@@ -39,7 +39,7 @@ public class ReligiousOrderController {
                     MediaType.APPLICATION_YAML_VALUE
             }
     )
-    public List<ConsecratedPersonDTO> getAllMenbers(@PathVariable("orderName") String orderName) {
+    public List<ConsecratedPersonDTO> findAllMenbers(@PathVariable("orderName") String orderName) {
         return service.findAllMenbers(orderName);
     }
 
@@ -50,7 +50,7 @@ public class ReligiousOrderController {
                     MediaType.APPLICATION_YAML_VALUE
             }
     )
-    public List<ReligiousOrderDTO> getAll() {
+    public List<ReligiousOrderDTO> findAll() {
         return service.findAll();
     }
 

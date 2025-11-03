@@ -76,10 +76,10 @@ public class ReligiousOrderService {
 
     public void addHateoas(ReligiousOrderDTO dto) {
         logger.info("adding hateoas");
-        dto.add(linkTo(methodOn(ReligiousOrderController.class)).withSelfRel().withType("GET"));
+        dto.add(linkTo(methodOn(ReligiousOrderController.class).findById(dto.getReligiousOrderId())).withSelfRel().withType("GET"));
 
-        dto.add(linkTo(methodOn(ReligiousOrderController.class)).withRel("findAll").withType("GET"));
+        dto.add(linkTo(methodOn(ReligiousOrderController.class).findAll()).withRel("findAll").withType("GET"));
 
-        dto.add(linkTo(methodOn(ReligiousOrderController.class)).withRel("findAllMenbers").withType("GET"));
+        dto.add(linkTo(methodOn(ReligiousOrderController.class).findAllMenbers("")).withRel("findAllMenbers").withType("GET"));
     }
 }

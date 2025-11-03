@@ -43,8 +43,7 @@ public class ConsecratedPersonService {
                     ReligiousOrder newOrder = mapper.parseObject(saint.getReligiousOrder(), ReligiousOrder.class);
                     return rORepository.save(newOrder);
                 });
-
-        //vincula a RO ao santo
+        //vinculando RO
         entity.setReligiousOrder(order);
 
         ConsecratedPersonDTO dto = mapper.parseObject(repository.save(entity), ConsecratedPersonDTO.class);
