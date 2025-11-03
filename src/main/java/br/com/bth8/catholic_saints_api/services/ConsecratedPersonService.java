@@ -7,6 +7,8 @@ import br.com.bth8.catholic_saints_api.dto.SaintDTO;
 import br.com.bth8.catholic_saints_api.exception.EntityNotFound;
 import br.com.bth8.catholic_saints_api.mapper.ObjectMapper;
 import br.com.bth8.catholic_saints_api.model.ConsecratedPerson;
+import br.com.bth8.catholic_saints_api.model.ReligiousOrder;
+import br.com.bth8.catholic_saints_api.repository.ReligiousOrderRepository;
 import br.com.bth8.catholic_saints_api.repository.SaintRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +26,8 @@ public class ConsecratedPersonService {
     @Autowired
     private SaintRepository repository;
     @Autowired
+    private ReligiousOrderRepository rORepository;
+    @Autowired
     private ObjectMapper mapper;
 
 
@@ -31,6 +35,17 @@ public class ConsecratedPersonService {
         logger.info("creating a ConsecratedPerson");
 
         ConsecratedPerson entity = mapper.parseObject(saint, ConsecratedPerson.class);
+
+        //pega o a RO par vincular ao Santo
+        ReligiousOrder order = rORepository.findByName(saint.getReligiousOrder().getName())
+                .orElseGet(() -> {//caso não exista no banco ele cria
+                    logger.info("creating a new ReligiousOrder");
+                    ReligiousOrder newOrder = mapper.parseObject(saint.getReligiousOrder(), ReligiousOrder.class);
+                    return rORepository.save(newOrder);
+                });
+
+        //vincula a RO ao santo
+        entity.setReligiousOrder(order);
 
         ConsecratedPersonDTO dto = mapper.parseObject(repository.save(entity), ConsecratedPersonDTO.class);
         addHateoas(dto);

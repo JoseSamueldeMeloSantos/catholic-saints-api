@@ -4,6 +4,7 @@ import br.com.bth8.catholic_saints_api.dto.ReligiousOrderDTO;
 import br.com.bth8.catholic_saints_api.exception.EntityNotFound;
 import br.com.bth8.catholic_saints_api.mapper.ObjectMapper;
 import br.com.bth8.catholic_saints_api.model.ReligiousOrder;
+import br.com.bth8.catholic_saints_api.model.Saint;
 import br.com.bth8.catholic_saints_api.repository.ReligiousOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -71,4 +72,10 @@ public class ReligiousOrderService {
 
         return mapper.parseObject(repository.save(entity), ReligiousOrderDTO.class);
     }
+
+//    public List<Saint> findAllMenber() {
+//        logger.info("finding all menbers of an religious order");
+//
+//        List<Saint> enitityList = repository.findAll();
+//    }
 }

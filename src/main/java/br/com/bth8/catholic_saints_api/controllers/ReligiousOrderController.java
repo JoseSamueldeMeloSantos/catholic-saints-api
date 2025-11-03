@@ -1,6 +1,7 @@
 package br.com.bth8.catholic_saints_api.controllers;
 
 import br.com.bth8.catholic_saints_api.dto.ReligiousOrderDTO;
+import br.com.bth8.catholic_saints_api.model.Saint;
 import br.com.bth8.catholic_saints_api.services.ReligiousOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -17,37 +18,6 @@ public class ReligiousOrderController {
     @Autowired
     private ReligiousOrderService service;
 
-    @PostMapping(
-            consumes = {
-                    MediaType.APPLICATION_JSON_VALUE,
-                    MediaType.APPLICATION_XML_VALUE,
-                    MediaType.APPLICATION_YAML_VALUE
-            },
-            produces = {
-                    MediaType.APPLICATION_JSON_VALUE,
-                    MediaType.APPLICATION_XML_VALUE,
-                    MediaType.APPLICATION_YAML_VALUE
-            }
-    )
-    public ReligiousOrderDTO create(ReligiousOrderDTO  religiousOrder) {
-        return service.create(religiousOrder);
-    }
-
-    @PutMapping(
-            consumes = {
-                    MediaType.APPLICATION_JSON_VALUE,
-                    MediaType.APPLICATION_XML_VALUE,
-                    MediaType.APPLICATION_YAML_VALUE
-            },
-            produces = {
-                    MediaType.APPLICATION_JSON_VALUE,
-                    MediaType.APPLICATION_XML_VALUE,
-                    MediaType.APPLICATION_YAML_VALUE
-            }
-    )
-    public ReligiousOrderDTO update(@RequestBody ReligiousOrderDTO religiousOrder) {
-        return  service.update(religiousOrder);
-    }
 
     @GetMapping(
             value = "/{id}",
@@ -60,6 +30,17 @@ public class ReligiousOrderController {
     public ReligiousOrderDTO findById(@PathVariable("id")UUID id) {
         return service.findById(id);
     }
+
+//    @GetMapping(
+//            produces = {
+//                    MediaType.APPLICATION_JSON_VALUE,
+//                    MediaType.APPLICATION_XML_VALUE,
+//                    MediaType.APPLICATION_YAML_VALUE
+//            }
+//    )
+//    public List<Saint> getAllMenbers() {
+//        return service.findAllMenber();
+//    }
 
     @GetMapping(
             produces = {

@@ -27,15 +27,22 @@ public class ReligiousOrder {
     private UUID religiousOrderId;
 
     @NotBlank
-    @Column(nullable = false, length = 30)
+    @Column(nullable = false, length = 30, unique = true)
     private String founder;
 
     @NotBlank
-    @Column(nullable = false, length = 30)
+    @Column(nullable = false, length = 30,unique = true)
     private String name;
 
     @Column(name = "foundation_date")
     private LocalDate foundationDate;
+
+    /*
+    cascade = CascadeType.ALL permite que, se você salvar um ReligiousOrder, os membros sejam salvos automaticamente.
+    orphanRemoval = true garante que, se um ConsecratedPerson for removido da lista, ele também será deletado do banco.
+     */
+    @OneToMany(mappedBy = "religiousOrder",cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ConsecratedPerson> menbers;
 
     @ElementCollection
     @Column(name = "vow")

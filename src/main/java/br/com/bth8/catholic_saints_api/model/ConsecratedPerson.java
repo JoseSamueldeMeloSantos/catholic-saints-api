@@ -31,7 +31,8 @@ public class ConsecratedPerson extends Saint {
     @Column(name = "ordination_date")
     private LocalDate ordinationDate;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "religious_order_id")
     private ReligiousOrder religiousOrder;
+
 }

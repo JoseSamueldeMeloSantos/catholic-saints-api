@@ -26,7 +26,7 @@ public abstract class Saint {
     private UUID saintId;
 
     @NotBlank
-    @Column(nullable = false, length = 30)
+    @Column(nullable = false, length = 30,unique = true)
     private String name;
 
     @Column(length = 500)
