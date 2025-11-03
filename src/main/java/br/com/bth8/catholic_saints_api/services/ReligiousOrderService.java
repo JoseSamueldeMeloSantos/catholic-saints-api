@@ -1,5 +1,6 @@
 package br.com.bth8.catholic_saints_api.services;
 
+import br.com.bth8.catholic_saints_api.controllers.ReligiousOrderController;
 import br.com.bth8.catholic_saints_api.dto.ConsecratedPersonDTO;
 import br.com.bth8.catholic_saints_api.dto.ReligiousOrderDTO;
 import br.com.bth8.catholic_saints_api.exception.EntityNotFound;
@@ -15,6 +16,9 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.logging.Logger;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 @Service
 public class ReligiousOrderService {
 
@@ -22,6 +26,8 @@ public class ReligiousOrderService {
     private ReligiousOrderRepository repository;
     @Autowired
     private ObjectMapper mapper;
+    @Autowired
+    private ConsecratedPersonService cPService;
 
     private Logger logger = Logger.getLogger(ReligiousOrderService.class.getName());
 
@@ -31,7 +37,9 @@ public class ReligiousOrderService {
         ReligiousOrder entity = repository.findById(id)
                 .orElseThrow(() -> new EntityNotFound("Entity Not Found"));
 
-        return mapper.parseObject(entity, ReligiousOrderDTO.class);
+        ReligiousOrderDTO dto = mapper.parseObject(entity, ReligiousOrderDTO.class);
+        addHateoas(dto);
+        return dto;
     }
 
     public List<ReligiousOrderDTO> findAll() {
@@ -39,7 +47,10 @@ public class ReligiousOrderService {
 
         List<ReligiousOrder> entities = repository.findAll();
 
-        return mapper.parseListObjects(entities,ReligiousOrderDTO.class);
+        List<ReligiousOrderDTO> listDto = mapper.parseListObjects(entities,ReligiousOrderDTO.class);
+        listDto.forEach((dto) -> addHateoas(dto));
+
+        return listDto;
     }
 
     public void delete(UUID id) {
@@ -51,12 +62,24 @@ public class ReligiousOrderService {
         repository.delete(entity);
     }
 
-    public List<ConsecratedPersonDTO> findAllMenber(String orderName) {
+    public List<ConsecratedPersonDTO> findAllMenbers(String orderName) {
         logger.info("finding all menbers of an religious order");
 
         Optional<ReligiousOrder> order = repository.findByName(orderName);
         List<ConsecratedPerson> menbers = order.get().getMenbers();
 
-        return mapper.parseListObjects(menbers, ConsecratedPersonDTO.class);
+        List<ConsecratedPersonDTO> listDto = mapper.parseListObjects(menbers, ConsecratedPersonDTO.class);
+        listDto.forEach((dto) -> cPService.addHateoas(dto));
+
+        return listDto;
+    }
+
+    public void addHateoas(ReligiousOrderDTO dto) {
+        logger.info("adding hateoas");
+        dto.add(linkTo(methodOn(ReligiousOrderController.class)).withSelfRel().withType("GET"));
+
+        dto.add(linkTo(methodOn(ReligiousOrderController.class)).withRel("findAll").withType("GET"));
+
+        dto.add(linkTo(methodOn(ReligiousOrderController.class)).withRel("findAllMenbers").withType("GET"));
     }
 }

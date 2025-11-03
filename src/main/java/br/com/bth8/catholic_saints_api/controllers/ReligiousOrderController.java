@@ -2,8 +2,6 @@ package br.com.bth8.catholic_saints_api.controllers;
 
 import br.com.bth8.catholic_saints_api.dto.ConsecratedPersonDTO;
 import br.com.bth8.catholic_saints_api.dto.ReligiousOrderDTO;
-import br.com.bth8.catholic_saints_api.dto.SaintDTO;
-import br.com.bth8.catholic_saints_api.model.Saint;
 import br.com.bth8.catholic_saints_api.services.ReligiousOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -42,7 +40,7 @@ public class ReligiousOrderController {
             }
     )
     public List<ConsecratedPersonDTO> getAllMenbers(@PathVariable("orderName") String orderName) {
-        return service.findAllMenber(orderName);
+        return service.findAllMenbers(orderName);
     }
 
     @GetMapping(

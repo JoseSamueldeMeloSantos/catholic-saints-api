@@ -2,6 +2,8 @@ package br.com.bth8.catholic_saints_api.dto;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.server.core.Relation;
 
 import java.time.LocalDate;
 import java.util.Date;
@@ -9,7 +11,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-public class ReligiousOrderDTO {
+@Relation(collectionRelation = "religious_orders")
+public class ReligiousOrderDTO  extends RepresentationModel<ReligiousOrderDTO> {
 
     private UUID religiousOrderId;
     private String founder;
