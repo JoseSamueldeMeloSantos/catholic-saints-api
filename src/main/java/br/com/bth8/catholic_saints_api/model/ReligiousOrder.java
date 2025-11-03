@@ -1,5 +1,7 @@
 package br.com.bth8.catholic_saints_api.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -41,6 +43,7 @@ public class ReligiousOrder {
     cascade = CascadeType.ALL permite que, se você salvar um ReligiousOrder, os membros sejam salvos automaticamente.
     orphanRemoval = true garante que, se um ConsecratedPerson for removido da lista, ele também será deletado do banco.
      */
+    @JsonIgnore
     @OneToMany(mappedBy = "religiousOrder",cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ConsecratedPerson> menbers;
 

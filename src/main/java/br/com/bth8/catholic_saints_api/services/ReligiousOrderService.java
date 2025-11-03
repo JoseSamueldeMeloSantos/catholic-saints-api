@@ -1,15 +1,17 @@
 package br.com.bth8.catholic_saints_api.services;
 
+import br.com.bth8.catholic_saints_api.dto.ConsecratedPersonDTO;
 import br.com.bth8.catholic_saints_api.dto.ReligiousOrderDTO;
 import br.com.bth8.catholic_saints_api.exception.EntityNotFound;
 import br.com.bth8.catholic_saints_api.mapper.ObjectMapper;
+import br.com.bth8.catholic_saints_api.model.ConsecratedPerson;
 import br.com.bth8.catholic_saints_api.model.ReligiousOrder;
-import br.com.bth8.catholic_saints_api.model.Saint;
 import br.com.bth8.catholic_saints_api.repository.ReligiousOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -22,15 +24,6 @@ public class ReligiousOrderService {
     private ObjectMapper mapper;
 
     private Logger logger = Logger.getLogger(ReligiousOrderService.class.getName());
-
-
-    public ReligiousOrderDTO create(ReligiousOrderDTO religiousOrder) {
-        logger.info("creating ReligiousOrder");
-
-        ReligiousOrder entity = mapper.parseObject(religiousOrder, ReligiousOrder.class);
-
-        return mapper.parseObject(repository.save(entity),ReligiousOrderDTO.class);
-    }
 
     public ReligiousOrderDTO findById(UUID id) {
         logger.info("finding a ReligiousOrder by his ID");
@@ -49,7 +42,6 @@ public class ReligiousOrderService {
         return mapper.parseListObjects(entities,ReligiousOrderDTO.class);
     }
 
-
     public void delete(UUID id) {
         logger.info("deleting a ReligiousOrder by his ID");
 
@@ -59,23 +51,12 @@ public class ReligiousOrderService {
         repository.delete(entity);
     }
 
-    public ReligiousOrderDTO update(ReligiousOrderDTO religiousOrder) {
-        logger.info("updating a ReligiousOrder");
+    public List<ConsecratedPersonDTO> findAllMenber(String orderName) {
+        logger.info("finding all menbers of an religious order");
 
-        ReligiousOrder entity = repository.findById(religiousOrder.getReligiousOrderId())
-                .orElseThrow(() -> new EntityNotFound("Enity Not Found"));
+        Optional<ReligiousOrder> order = repository.findByName(orderName);
+        List<ConsecratedPerson> menbers = order.get().getMenbers();
 
-        entity.setFounder(religiousOrder.getFounder());
-        entity.setName(religiousOrder.getName());
-        entity.setFoundationDate(religiousOrder.getFoundationDate());
-        entity.setVows(religiousOrder.getVows());
-
-        return mapper.parseObject(repository.save(entity), ReligiousOrderDTO.class);
+        return mapper.parseListObjects(menbers, ConsecratedPersonDTO.class);
     }
-
-//    public List<Saint> findAllMenber() {
-//        logger.info("finding all menbers of an religious order");
-//
-//        List<Saint> enitityList = repository.findAll();
-//    }
 }
