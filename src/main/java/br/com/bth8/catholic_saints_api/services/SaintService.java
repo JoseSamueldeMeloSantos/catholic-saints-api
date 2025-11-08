@@ -1,5 +1,6 @@
 package br.com.bth8.catholic_saints_api.services;
 
+import br.com.bth8.catholic_saints_api.controllers.LayPersonController;
 import br.com.bth8.catholic_saints_api.controllers.SaintController;
 import br.com.bth8.catholic_saints_api.dto.LayPersonDTO;
 import br.com.bth8.catholic_saints_api.dto.SaintDTO;
@@ -8,9 +9,14 @@ import br.com.bth8.catholic_saints_api.mapper.ObjectMapper;
 import br.com.bth8.catholic_saints_api.model.Saint;
 import br.com.bth8.catholic_saints_api.repository.SaintRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
 import org.springframework.hateoas.PagedModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,14 +35,28 @@ public class SaintService {
     private SaintRepository repository;
     @Autowired
     private ObjectMapper mapper;
+    @Autowired
+    private PagedResourcesAssembler<SaintDTO> assembler;
 
-    public List<SaintDTO> findAll() {
+    public PagedModel<EntityModel<SaintDTO>> findAll(Pageable pageable) {
         logger.info("finding all saint");
 
-        List<SaintDTO> dtoList = mapper.parseListObjects(repository.findAll(), SaintDTO.class);
-        dtoList.forEach(dto -> {addHateosLinks(dto);});
+        Page<Saint> saints = repository.findAll(pageable);
 
-        return dtoList;
+        Page<SaintDTO> saintDtoWithHateos = saints.map( saint -> {
+            SaintDTO dto = mapper.parseObject(saint, SaintDTO.class);
+            addHateosLinks(dto);
+            return dto;
+        });
+
+        Link findAllLink =
+                WebMvcLinkBuilder.linkTo(
+                        WebMvcLinkBuilder
+                        .methodOn(SaintController.class)
+                        .findAll(pageable.getPageNumber(), pageable.getPageSize(), String.valueOf(pageable.getSort())))
+                        .withSelfRel();
+
+        return assembler.toModel(saintDtoWithHateos, findAllLink);
     }
 
     public SaintDTO findById(UUID id) {
@@ -67,7 +87,7 @@ public class SaintService {
 
         dto.add(linkTo(methodOn(SaintController.class).findById(dto.getSaintId())).withSelfRel().withType("GET"));
 
-        dto.add(linkTo(methodOn(SaintController.class).findAll()).withRel("findAll").withType("GET"));
+        dto.add(linkTo(methodOn(SaintController.class).findAll(1,12,"asc")).withRel("findAll").withType("GET"));
 
         dto.add(linkTo(methodOn(SaintController.class).delete(dto.getSaintId())).withRel("delete").withType("DELETE"));
     }
