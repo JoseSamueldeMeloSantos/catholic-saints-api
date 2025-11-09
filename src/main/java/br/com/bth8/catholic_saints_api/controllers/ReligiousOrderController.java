@@ -67,8 +67,16 @@ public class ReligiousOrderController {
                     MediaType.APPLICATION_YAML_VALUE
             }
     )
-    public List<ReligiousOrderDTO> findAll() {
-        return service.findAll();
+    public ResponseEntity<PagedModel<EntityModel<ReligiousOrderDTO>>> findAll(
+            @RequestParam(value = "page", defaultValue = "0") Integer page,
+            @RequestParam(value = "size", defaultValue = "12") Integer size,
+            @RequestParam(value = "direction", defaultValue = "asc") String direction
+    ) {
+        Direction sortDirection = "desc".equalsIgnoreCase(direction) ? Direction.DESC : Direction.ASC;
+
+        Pageable pageable = PageRequest.of(page,size,Sort.by(sortDirection, "name"));
+
+        return ResponseEntity.ok(service.findAll(pageable));
     }
 
     @DeleteMapping("/{id}")

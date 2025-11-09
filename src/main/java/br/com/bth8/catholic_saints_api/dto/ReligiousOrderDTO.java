@@ -28,6 +28,9 @@ public class ReligiousOrderDTO  extends RepresentationModel<ReligiousOrderDTO> {
         this.vows = vows;
     }
 
+    public ReligiousOrderDTO() {
+    }
+
     public UUID getReligiousOrderId() {
         return religiousOrderId;
     }

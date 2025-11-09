@@ -37,7 +37,9 @@ public class ReligiousOrderService {
     @Autowired
     private ConsecratedPersonService cPService;
     @Autowired
-    private PagedResourcesAssembler<ConsecratedPersonDTO> assembler;
+    private PagedResourcesAssembler<ConsecratedPersonDTO> assemblerCP;
+    @Autowired
+    private PagedResourcesAssembler<ReligiousOrderDTO> assemblerRO;
 
     private Logger logger = Logger.getLogger(ReligiousOrderService.class.getName());
 
@@ -52,15 +54,31 @@ public class ReligiousOrderService {
         return dto;
     }
 
-    public List<ReligiousOrderDTO> findAll() {
+    public PagedModel<EntityModel<ReligiousOrderDTO>> findAll(Pageable pageable) {
         logger.info("finding all ReligiousOrder");
 
-        List<ReligiousOrder> entities = repository.findAll();
+        Page<ReligiousOrder> orders = repository.findAll(pageable);
 
-        List<ReligiousOrderDTO> listDto = mapper.parseListObjects(entities,ReligiousOrderDTO.class);
-        listDto.forEach((dto) -> addHateoas(dto));
+        Page<ReligiousOrderDTO> orderDtoWithHateoas = orders.map(
+                order -> {
+                    ReligiousOrderDTO dto = mapper.parseObject(order, ReligiousOrderDTO.class);
+                    addHateoas(dto);
+                    return dto;
+                }
+        );
 
-        return listDto;
+        Link findAllLink =
+               linkTo(
+                    methodOn(ReligiousOrderController.class)
+                    .findAll(
+                            pageable.getPageNumber(),
+                            pageable.getPageSize(),
+                            String.valueOf(pageable.getSort())
+                    )
+               )
+                .withSelfRel();
+
+        return assemblerRO.toModel(orderDtoWithHateoas, findAllLink);
     }
 
     public void delete(UUID id) {
@@ -87,23 +105,24 @@ public class ReligiousOrderService {
 
         Link findAllLink =
                 linkTo(
-                        methodOn(ReligiousOrderController.class)
-                        .findAllMenbers(
-                                pageable.getPageNumber(),
-                                pageable.getPageSize(),
-                                String.valueOf(pageable.getSort()),
-                                orderName
-                        ))
-                        .withSelfRel();
+                    methodOn(ReligiousOrderController.class)
+                    .findAllMenbers(
+                            pageable.getPageNumber(),
+                            pageable.getPageSize(),
+                            String.valueOf(pageable.getSort()),
+                            orderName
+                    )
+                )
+                .withSelfRel();
 
-        return assembler.toModel(menberDtoWithHateos,findAllLink);
+        return assemblerCP.toModel(menberDtoWithHateos,findAllLink);
     }
 
     public void addHateoas(ReligiousOrderDTO dto) {
         logger.info("adding hateoas");
         dto.add(linkTo(methodOn(ReligiousOrderController.class).findById(dto.getReligiousOrderId())).withSelfRel().withType("GET"));
 
-        dto.add(linkTo(methodOn(ReligiousOrderController.class).findAll()).withRel("findAll").withType("GET"));
+        dto.add(linkTo(methodOn(ReligiousOrderController.class).findAll(0, 12, "asc")).withRel("findAll").withType("GET"));
 
         dto.add(linkTo(methodOn(ReligiousOrderController.class).findAllMenbers(0,12, "asc","orderName")).withRel("findAllMenbers").withType("GET"));
     }
