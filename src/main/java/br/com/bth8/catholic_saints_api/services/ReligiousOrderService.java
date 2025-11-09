@@ -9,9 +9,17 @@ import br.com.bth8.catholic_saints_api.model.ConsecratedPerson;
 import br.com.bth8.catholic_saints_api.model.ReligiousOrder;
 import br.com.bth8.catholic_saints_api.repository.ReligiousOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.PagedModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.logging.Logger;
@@ -28,6 +36,8 @@ public class ReligiousOrderService {
     private ObjectMapper mapper;
     @Autowired
     private ConsecratedPersonService cPService;
+    @Autowired
+    private PagedResourcesAssembler<ConsecratedPersonDTO> assembler;
 
     private Logger logger = Logger.getLogger(ReligiousOrderService.class.getName());
 
@@ -62,16 +72,31 @@ public class ReligiousOrderService {
         repository.delete(entity);
     }
 
-    public List<ConsecratedPersonDTO> findAllMenbers(String orderName) {
+    public PagedModel<EntityModel<ConsecratedPersonDTO>> findAllMenbers(Pageable pageable, String orderName) {
         logger.info("finding all menbers of an religious order");
 
-        Optional<ReligiousOrder> order = repository.findByName(orderName);
-        List<ConsecratedPerson> menbers = order.get().getMenbers();
+        Page<ConsecratedPerson> menbers = repository.findMembersByOrderName(orderName, pageable);
 
-        List<ConsecratedPersonDTO> listDto = mapper.parseListObjects(menbers, ConsecratedPersonDTO.class);
-        listDto.forEach((dto) -> cPService.addHateoas(dto));
+        Page<ConsecratedPersonDTO> menberDtoWithHateos = menbers.map(
+                menber -> {
+                    ConsecratedPersonDTO dto = mapper.parseObject(menber, ConsecratedPersonDTO.class);
+                    cPService.addHateoas(dto);
+                    return dto;
+                }
+        );
 
-        return listDto;
+        Link findAllLink =
+                linkTo(
+                        methodOn(ReligiousOrderController.class)
+                        .findAllMenbers(
+                                pageable.getPageNumber(),
+                                pageable.getPageSize(),
+                                String.valueOf(pageable.getSort()),
+                                orderName
+                        ))
+                        .withSelfRel();
+
+        return assembler.toModel(menberDtoWithHateos,findAllLink);
     }
 
     public void addHateoas(ReligiousOrderDTO dto) {
@@ -80,6 +105,6 @@ public class ReligiousOrderService {
 
         dto.add(linkTo(methodOn(ReligiousOrderController.class).findAll()).withRel("findAll").withType("GET"));
 
-        dto.add(linkTo(methodOn(ReligiousOrderController.class).findAllMenbers("")).withRel("findAllMenbers").withType("GET"));
+        dto.add(linkTo(methodOn(ReligiousOrderController.class).findAllMenbers(0,12, "asc","orderName")).withRel("findAllMenbers").withType("GET"));
     }
 }
